@@ -9,15 +9,19 @@ public class TicTacToe implements ActionListener {
     JFrame frame = new JFrame();
     JPanel title_panel = new JPanel();
     JPanel button_panel = new JPanel();
+    JPanel menu_panel = new JPanel();
     JLabel textField = new JLabel();
     JButton[] buttons = new JButton[9];
+    JButton replayButton = new JButton("Replay");
+    JButton homeButton = new JButton("Home");
     boolean player1_turn;
     boolean playing = true;
+
 
     TicTacToe() {
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1000,1000);
+        frame.setSize(600,800);
         frame.getContentPane().setBackground(new Color(0,10,20));
         frame.setLayout(new BorderLayout());
         frame.setVisible(true);
@@ -33,7 +37,8 @@ public class TicTacToe implements ActionListener {
         title_panel.setBounds(0,0,800,100);
 
         button_panel.setLayout(new GridLayout(3,3));
-        button_panel.setBackground(new Color(120,100,250));
+
+        menu_panel.setLayout(new GridLayout(1,2));
 
         for(int i = 0; i < 9; i++) {
             buttons[i] = new JButton();
@@ -41,11 +46,32 @@ public class TicTacToe implements ActionListener {
             buttons[i].setFont(new Font("Helvetica", Font.BOLD, 75));
             buttons[i].setFocusable(false);
             buttons[i].addActionListener(this);
+            buttons[i].setRolloverEnabled(false);
+            buttons[i].setBackground(Color.BLACK);
+            buttons[i].setBorder(BorderFactory.createLineBorder(Color.GRAY));
         }
+
+
+        homeButton.setFont(new Font("Helvetica", Font.BOLD, 25));
+        homeButton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        homeButton.setBackground(Color.WHITE);
+        homeButton.setForeground(Color.BLACK);
+        homeButton.addActionListener(this);
+        menu_panel.add(homeButton);
+
+        replayButton.setFont(new Font("Helvetica", Font.BOLD, 25));
+        replayButton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        replayButton.setBackground(Color.WHITE);
+        replayButton.setForeground(Color.BLACK);
+        replayButton.addActionListener(this);
+        menu_panel.add(replayButton);
+
 
         title_panel.add(textField);
         frame.add(title_panel, BorderLayout.NORTH);
         frame.add(button_panel);
+        frame.add(menu_panel, BorderLayout.SOUTH);
+
 
         firstTurn();
     }
@@ -180,20 +206,20 @@ public class TicTacToe implements ActionListener {
 
     public void xWins(int a, int b, int c) {
         textField.setText("xWins");
-        buttons[a].setForeground(Color.yellow);
-        buttons[b].setForeground(Color.yellow);
-        buttons[c].setForeground(Color.yellow);
-        player1_turn = false;
-            
+        buttons[a].setForeground(new Color(0,0,255));
+        buttons[b].setForeground(new Color(0,0,255));
+        buttons[c].setForeground(new Color(0,0,255));
+        playing = false;
     }
 
     public void oWins(int a, int b, int c) {
         textField.setText("oWins");
-        buttons[a].setForeground(Color.yellow);
-        buttons[b].setForeground(Color.yellow);
-        buttons[c].setForeground(Color.yellow);
+        buttons[a].setForeground(new Color(255, 0, 0));
+        buttons[b].setForeground(new Color(255, 0, 0));
+        buttons[c].setForeground(new Color(255, 0, 0));
         playing = false;
     }
+
 
 
     @Override
@@ -203,7 +229,7 @@ public class TicTacToe implements ActionListener {
                 if (playing) {
                     if (player1_turn) {
                         if (Objects.equals(buttons[i].getText(), "")) {
-                            buttons[i].setForeground(Color.BLUE);
+                            buttons[i].setForeground(new Color(113, 113, 239));
                             buttons[i].setText("X");
                             player1_turn = false;
                             textField.setText("O Turn");
@@ -211,7 +237,7 @@ public class TicTacToe implements ActionListener {
                         }
                     } else {
                         if (Objects.equals(buttons[i].getText(), "")) {
-                            buttons[i].setForeground(Color.GREEN);
+                            buttons[i].setForeground(new Color(239, 113, 113));
                             buttons[i].setText("O");
                             player1_turn = true;
                             textField.setText("X Turn");
@@ -220,6 +246,13 @@ public class TicTacToe implements ActionListener {
                     }
                 }
             }
+        }
+        if (e.getSource() == replayButton) {
+            for (int i = 0; i < 9; i++) {
+                buttons[i].setText("");
+            }
+            firstTurn();
+            playing = true;
         }
     }
 }
